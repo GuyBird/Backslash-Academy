@@ -9,7 +9,15 @@ import Component2 from './Component2';
 class App extends Component {
   state = {
     searchTerm: '',
-    json: null
+    json: null,
+    data: null
+  };
+
+  backend = event => {
+    event.preventDefault();
+    fetch('http://localhost:3001/hello')
+    .then(res => res.json())
+    .then(d => this.setState({ data: d }));
   };
 
   search = event => {
@@ -22,11 +30,16 @@ class App extends Component {
 
   render() {
     const json = this.state.json;
+    const data = this.state.data;
 
     return (
+      
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            <button onClick={this.backend}> Message from backend </button>
+          </p>
           <p>
             <form onSubmit={this.search}>
               <input type="text" value={this.state.searchTerm} onChange={event => this.setState({ searchTerm: event.target.value })} />
@@ -37,6 +50,9 @@ class App extends Component {
             Github repository
           </a>
           <Link to="/hello">Hello</Link>
+
+          {JSON.stringify(data)}
+          
           {json &&
             json.items.map(item => (
               <div>
