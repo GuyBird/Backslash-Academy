@@ -33,10 +33,10 @@ class App extends Component {
               <button>Search</button>
             </form>
           </p>
-          <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-            Learn React!!
+          <a className="App-link" href="https://github.com/GuyBird/Backslash-Academy" target="_blank" rel="noopener noreferrer">
+            Github repository
           </a>
-          <Link to="/hello">HELLO</Link>
+          <Link to="/hello">Hello</Link>
           {json &&
             json.items.map(item => (
               <div>
