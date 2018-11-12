@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './Bepis.jpg';
 import './App.css';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -13,11 +13,20 @@ class App extends Component {
     data: null
   };
 
+  backendSearch = event => {
+    event.preventDefault();
+
+    fetch('http://localhost:3000/hello?q=' + this.state.searchTerm)
+      .then(res => res.json())
+      .then(json => this.setState({ json }));
+  };
+
   backend = event => {
     event.preventDefault();
+
     fetch('http://localhost:3001/hello')
-    .then(res => res.json())
-    .then(d => this.setState({ data: d }));
+      .then(res => res.json())
+      .then(d => this.setState({ data: d }));
   };
 
   search = event => {
@@ -25,12 +34,13 @@ class App extends Component {
 
     fetch('https://api.github.com/search/repositories?q=' + this.state.searchTerm)
       .then(res => res.json())
-      .then(json => this.setState({ json }));
+      .then(json3 => this.setState({ json3 }));
   };
 
   render() {
-    const json = this.state.json;
+    const json3 = this.state.json3;
     const data = this.state.data;
+    const json = this.state.json;
 
     return (
       
@@ -40,6 +50,14 @@ class App extends Component {
           <p>
             <button onClick={this.backend}> Message from backend </button>
           </p>
+
+           <p>
+              <form onSubmit={this.backendSearch}>
+                <input type="text" value={this.state.backendSearchTerm} onChange={event => this.setState({ backendSearchTerm: event.target.value })} />
+                <button>Search backend</button>
+              </form>
+           </p>
+
           <p>
             <form onSubmit={this.search}>
               <input type="text" value={this.state.searchTerm} onChange={event => this.setState({ searchTerm: event.target.value })} />
@@ -50,9 +68,20 @@ class App extends Component {
             Github repository
           </a>
           <Link to="/hello">Hello</Link>
-
-          {JSON.stringify(data)}
+          <p>
+            {JSON.stringify(data)}
+          </p>
           
+          {json3 &&
+            json3.items.map(item => (
+              <div>
+                {item.name}
+                <img src={item.owner.avatar_url} alt="?" />
+              </div>
+            ))}
+
+            {JSON.stringify(json)}
+            
           {json &&
             json.items.map(item => (
               <div>
